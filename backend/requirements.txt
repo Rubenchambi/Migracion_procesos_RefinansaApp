@@ -1,0 +1,8 @@
+django
+django-ninja
+pandas
+openpyxl
+cryptography
+python-dotenv
+# Si usas SQL Server añade: pyodbc
+# Si usas PostgreSQL añade: psycopg2-binary
