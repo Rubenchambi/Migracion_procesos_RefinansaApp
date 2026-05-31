@@ -4,5 +4,9 @@ pandas
 openpyxl
 cryptography
 python-dotenv
+django-cors-headers
+pyodbc
+mssql-django
+sqlalchemy
 # Si usas SQL Server añade: pyodbc
 # Si usas PostgreSQL añade: psycopg2-binary

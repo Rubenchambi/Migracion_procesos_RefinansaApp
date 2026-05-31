@@ -1,7 +1,8 @@
 import os
 import sys
 from pathlib import Path
-
+from dotenv import load_dotenv
+load_dotenv()
 # Ruta base del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -61,8 +62,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Base de datos interna de Django para el panel web (No interfiere con tu SQL Server)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': os.getenv("DB_DATABASE"),
+        'USER': os.getenv("DB_USERNAME"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_SERVER"),
+        'PORT': os.getenv("DB_PORT", "1433"), # Usa 1433 por defecto si no está en el .env
+        'OPTIONS': {
+            'driver': os.getenv("DB_DRIVER", "ODBC Driver 17 for SQL Server"),
+        },
     }
 }
 

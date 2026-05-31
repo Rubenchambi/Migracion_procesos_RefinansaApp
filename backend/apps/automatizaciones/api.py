@@ -5,6 +5,8 @@ import pandas as pd
 from ninja import File, Router
 from ninja.files import UploadedFile
 from sqlalchemy import text
+from fastapi import Form
+from fastapi import Request
 
 # Importamos tu conector de base de datos reutilizable
 from apps.db import obtener_engine_sql
@@ -127,15 +129,22 @@ def preview_lista_negra(request, archivo: UploadedFile = File(None)):
 # ENDPOINT 2: EJECUCIÓN FINAL (Paso 2)
 # =================================================================
 @router.post("/lista-negra/ejecutar")
-def ejecutar_carga_lista_negra(request, archivo: UploadedFile = File(None)):
+async def ejecutar_carga_lista_negra(request):
+    accion = request.POST.get("accion", "insertar")
+    archivo = request.FILES.get("archivo")
+    
+    print(f"DEBUG: Accion recibida: {accion}")
+    print(f"DEBUG: Archivo recibido: {archivo}")
     tiempo_inicio = datetime.now()
 
-    if archivo is None:
+    if archivo is None or archivo == 'undefined':
         ruta_calculada = obtener_ruta_excel_defecto()
         origen_datos = ruta_calculada
         nombre_archivo = os.path.basename(ruta_calculada)
     else:
-        origen_datos = archivo
+        # FastAPI recibe el archivo como objeto UploadFile, 
+        # accedemos a .file para obtener el stream de datos
+        origen_datos = archivo.file
         nombre_archivo = archivo.name
 
     try:
@@ -147,12 +156,16 @@ def ejecutar_carga_lista_negra(request, archivo: UploadedFile = File(None)):
 
         engine = obtener_engine_sql()
 
-        # Conteo antes de la inserción
         with engine.connect() as conn:
+            # Lógica de Limpieza
+            if accion == "limpiar":
+                conn.execute(text(f"TRUNCATE TABLE [{TABLA}]"))
+
             result = conn.execute(text(f"SELECT COUNT(*) FROM [{TABLA}]"))
             registros_antes = result.scalar()
+            conn.commit()
 
-        # Inserción en SQL Server con tu chunksize exacto de 1000 y fast_executemany activo
+        # Inserción en SQL Server
         df.to_sql(
             TABLA,
             con=engine,
@@ -161,7 +174,7 @@ def ejecutar_carga_lista_negra(request, archivo: UploadedFile = File(None)):
             chunksize=1000,
         )
 
-        # Conteo final y última fecha de auditoría
+        # Conteo final y última fecha
         with engine.connect() as conn:
             result = conn.execute(text(f"SELECT COUNT(*) FROM [{TABLA}]"))
             registros_despues = result.scalar()
@@ -177,7 +190,6 @@ def ejecutar_carga_lista_negra(request, archivo: UploadedFile = File(None)):
         filas_insertadas = registros_despues - registros_antes
         tiempo_total = (datetime.now() - tiempo_inicio).total_seconds()
 
-        # Estructura del Resumen Ejecutivo para renderizar en tarjetas informativas en la Web
         return {
             "success": True,
             "resumen": {
