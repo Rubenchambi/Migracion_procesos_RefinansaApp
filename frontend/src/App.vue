@@ -56,13 +56,14 @@
 <script setup>
 import { ref, computed } from 'vue'
 import ListaNegra from './components/ListaNegra.vue'
+import Metropolitana from './components/Metropolitana.vue'
 
 const esHorizontal = ref(false)
 const actual = ref('lista-negra')
 
 const modulos = [
   { id: 'lista-negra', nombre: 'Lista Negra', comp: ListaNegra },
-  { id: 'metropolitana', nombre: 'Metropolitana DXD' },
+  { id: 'metropolitana', nombre: 'Metropolitana DXD', comp: Metropolitana },
   { id: 'requerimientos', nombre: 'Requerimientos' },
   { id: 'predictivos', nombre: 'Predictivos Alfin' }
 ]

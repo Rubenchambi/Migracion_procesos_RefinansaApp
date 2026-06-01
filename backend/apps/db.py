@@ -1,22 +1,25 @@
+# apps/usuarios/db.py
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-# Cargar las variables del archivo .env
 load_dotenv()
 
-# Leer las credenciales
-SERVER = os.getenv("DB_SERVER")
-DATABASE = os.getenv("DB_DATABASE")
-USERNAME = os.getenv("DB_USERNAME")
-PASSWORD = os.getenv("DB_PASSWORD")
-DRIVER = os.getenv("DB_DRIVER")
+def obtener_engine_sql(db_type="default"):
+    if db_type == "asignaciones":
+        # Lee las variables con prefijo ASIG_
+        server = os.getenv("ASIG_SERVER")
+        database = os.getenv("ASIG_DATABASE")
+        username = os.getenv("ASIG_USERNAME")
+        password = os.getenv("ASIG_PASSWORD")
+        driver = os.getenv("ASIG_DRIVER")
+    else:
+        # Lee las variables por defecto (Django)
+        server = os.getenv("DB_SERVER")
+        database = os.getenv("DB_DATABASE")
+        username = os.getenv("DB_USERNAME")
+        password = os.getenv("DB_PASSWORD")
+        driver = os.getenv("DB_DRIVER")
 
-
-def obtener_engine_sql():
-    """Retorna el motor de conexión a SQL Server configurado con fast_executemany."""
-    cadena_conexion = (
-        f"mssql+pyodbc://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}?driver={DRIVER}"
-    )
-    # Retornamos el engine con tu criterio de velocidad exacta
+    cadena_conexion = f"mssql+pyodbc://{username}:{password}@{server}/{database}?driver={driver}"
     return create_engine(cadena_conexion, fast_executemany=True)
