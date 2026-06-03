@@ -18,7 +18,6 @@ const handleFileChange = (event) => {
 
 // 1. PREVISUALIZACIÓN
 const consultarPreview = async () => {
-  console.log("¡HOLA! El botón fue presionado");
   cargando.value = true
   errorMsg.value = null
   dataResultado.value = null
@@ -31,10 +30,10 @@ const consultarPreview = async () => {
     
     // Apuntamos al nuevo endpoint de metropolitana
     const response = await axios.post('http://127.0.0.1:8000/api/automatizaciones/metropolitana/preview', formData)
-    console.log("Respuesta del servidor:", response.data);
+    //console.log("Respuesta del servidor:", response.data);
     if (response.data.success) {
-      dataPreview.value = response.data
-  
+        dataPreview.value = response.data
+
     } else {
       errorMsg.value = response.data.error
     }
@@ -107,6 +106,9 @@ const ejecutarCarga = async () => {
           <input type="radio" v-model="modoOrigen" value="red" class="mt-1 accent-indigo-600">
           <div class="ml-3">
             <span class="block text-sm font-semibold text-slate-800">Ruta automatizada (Red)</span>
+            <span class="block text-xs text-slate-500 mt-1 font-mono break-all bg-white p-2 rounded border border-slate-200">
+              \\192.168.1.249\...\Complementos_SQL_2026\..._subir.xlsx
+            </span>
           </div>
         </label>
 
@@ -122,7 +124,10 @@ const ejecutarCarga = async () => {
       </div>
 
       <div class="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
+        <div class="space-y-2">
         <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">2. Acciones</h2>
+         <p class="text-xs text-slate-500">Valida la estructura antes de procesar la carga.</p>
+         </div>
         <div class="space-y-3 mt-4">
           <button @click="consultarPreview" :disabled="cargando" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition text-sm">🔍 Previsualizar</button>
           <button @click="ejecutarCarga" :disabled="cargando || !dataPreview" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-indigo-200 text-sm">🚀 Ejecutar Carga</button>
@@ -145,20 +150,26 @@ const ejecutarCarga = async () => {
       <div v-if="dataPreview" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm overflow-x-auto">
         <table class="w-full text-left text-xs">
           <thead class="text-slate-400 uppercase border-b">
-            <tr>            
+            <tr class="bg-indigo-700 text-white"> 
+              <th class="p-3 rounded-tl-xl">Nro</th>           
               <th class="p-3">Crédito_Doc</th>
               <th class="p-3">Crédito</th>
               <th class="p-3">Código</th>
+              <th class="p-3">Cartera</th>
+              <th class="p-3">Estado</th>
               <th class="p-3">Documento</th>
               <th class="p-3">Año</th>
-              <th class="p-3">Días Atraso</th>
+              <th class="p-3 rounded-tr-xl whitespace-nowrap">Días Atraso</th>
             </tr>
           </thead>
           <tbody class="divide-y">
             <tr v-for="(fila, i) in dataPreview.preview" :key="i" class="hover:bg-slate-50">
-              <td class="p-3 font-mono">{{ fila['NroDocumento-Credito'] || '-' }}</td>
-              <td class="p-3">{{ fila.Credito || '-' }}</td>
+              <td class="p-3 font-mono">{{ i + 1 }}</td>
+              <td class="p-3 font-mono whitespace-nowrap">{{ fila['NroDocumento-Credito'] || '-' }}</td>
+              <td class="p-3 whitespace-nowrap">{{ fila.Credito || '-' }}</td>
               <td class="p-3">{{ fila.Codigo || '-' }}</td>
+              <td class="p-3">{{ fila.cartera_c || '-' }}</td>
+              <td class="p-3 whitespace-nowrap">{{ fila.Estado || '-' }}</td>
               <td class="p-3">{{ fila.NroDocumento || '-' }}</td>
               <td class="p-3">{{ fila['año'] || '-' }}</td>
               <td class="p-3">{{ fila.DiasAtraso || '-' }}</td>

@@ -37,7 +37,7 @@
       <button v-for="mod in modulos" :key="mod.id" 
         @click="actual = mod.id"
         :class="actual === mod.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900'"
-        class="px-5 py-3 rounded-xl text-sm font-bold transition-all text-left">
+        class="px-5 py-3 rounded-xl text-sm font-bold transition-all text-left whitespace-nowrap">
         {{ mod.nombre }}
       </button>
       
@@ -62,7 +62,7 @@ const esHorizontal = ref(false)
 const actual = ref('lista-negra')
 
 const modulos = [
-  { id: 'lista-negra', nombre: 'Lista Negra', comp: ListaNegra },
+  { id: 'lista-negra', nombre: 'Lista Negra Telefonos', comp: ListaNegra },
   { id: 'metropolitana', nombre: 'Metropolitana DXD', comp: Metropolitana },
   { id: 'requerimientos', nombre: 'Requerimientos' },
   { id: 'predictivos', nombre: 'Predictivos Alfin' }

@@ -64,7 +64,10 @@ def preview_metropolitana(request, archivo: UploadedFile = File(None)):
                 registros_antes = conn.execute(query).scalar()
             except:
                 registros_antes = 0 # Si la tabla no existe aún
-        preview_data = df.head(10).to_dict(orient="records")    
+        preview_data = (
+                        df.head(10)
+                        .fillna("")
+                        .to_dict(orient="records") )  
         return {
             "success": True,
             "tabla_destino": tabla_destino,

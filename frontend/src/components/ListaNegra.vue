@@ -91,7 +91,7 @@ const procesarConAccion = async (accion) => {
     <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
-          <span>⚡</span> Lista Negra
+          <span>⚡</span> Lista Negra de Telefonos
         </h1>
         <p class="text-sm text-slate-500 mt-1">Carga masiva a SQL Server — Módulo de Gestión</p>
       </div>

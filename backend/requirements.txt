@@ -8,5 +8,6 @@ django-cors-headers
 pyodbc
 mssql-django
 sqlalchemy
+fastapi
 # Si usas SQL Server añade: pyodbc
 # Si usas PostgreSQL añade: psycopg2-binary
