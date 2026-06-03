@@ -6,7 +6,14 @@ from sqlalchemy import create_engine
 load_dotenv()
 
 def obtener_engine_sql(db_type="default"):
-    if db_type == "asignaciones":
+
+    if db_type == "actualizacion": # Nuevo caso
+        server = os.getenv("ACT_SERVER")
+        database = os.getenv("ACT_DATABASE")
+        username = os.getenv("ACT_USERNAME")
+        password = os.getenv("ACT_PASSWORD")
+        driver = os.getenv("ACT_DRIVER")
+    elif db_type == "asignaciones":
         # Lee las variables con prefijo ASIG_
         server = os.getenv("ASIG_SERVER")
         database = os.getenv("ASIG_DATABASE")

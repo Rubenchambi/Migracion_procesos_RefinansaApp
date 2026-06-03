@@ -9,5 +9,6 @@ pyodbc
 mssql-django
 sqlalchemy
 fastapi
+python-multipart
 # Si usas SQL Server añade: pyodbc
 # Si usas PostgreSQL añade: psycopg2-binary

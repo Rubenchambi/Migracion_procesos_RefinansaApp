@@ -4,6 +4,7 @@ from ninja import NinjaAPI
 # Importamos el router donde está tu proceso de lista negra
 from apps.automatizaciones.api import router as automatizaciones_router
 from apps.automatizaciones.metropolitana import router as metropolitana_router
+from apps.automatizaciones.actualizar import router as actualizar_router
 
 # Inicializamos Django Ninja con el título de tu proyecto
 api = NinjaAPI(
@@ -15,7 +16,7 @@ api = NinjaAPI(
 # Registramos el router de tus scripts bajo el prefijo /automatizaciones
 api.add_router("/automatizaciones/", automatizaciones_router)
 api.add_router("/automatizaciones/metropolitana", metropolitana_router)
-
+api.add_router("/automatizaciones/", actualizar_router)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api.urls), # <-- Aquí se expone toda tu API
