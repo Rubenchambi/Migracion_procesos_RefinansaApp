@@ -5,7 +5,7 @@ from ninja import NinjaAPI
 from apps.automatizaciones.api import router as automatizaciones_router
 from apps.automatizaciones.metropolitana import router as metropolitana_router
 from apps.automatizaciones.actualizar import router as actualizar_router
-
+from apps.metas.meta import router as metas_router
 # Inicializamos Django Ninja con el título de tu proyecto
 api = NinjaAPI(
     title="RefinansaApp API",
@@ -17,6 +17,7 @@ api = NinjaAPI(
 api.add_router("/automatizaciones/", automatizaciones_router)
 api.add_router("/automatizaciones/metropolitana", metropolitana_router)
 api.add_router("/automatizaciones/", actualizar_router)
+api.add_router("/metas", metas_router)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api.urls), # <-- Aquí se expone toda tu API

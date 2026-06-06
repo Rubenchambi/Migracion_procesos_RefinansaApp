@@ -7,7 +7,14 @@ load_dotenv()
 
 def obtener_engine_sql(db_type="default"):
 
-    if db_type == "actualizacion": # Nuevo caso
+    if db_type=="metas":
+        server = os.getenv("MET_SERVER")
+        database = os.getenv("MET_DATABASE")
+        username = os.getenv("MET_USERNAME")
+        password = os.getenv("MET_PASSWORD")
+        driver = os.getenv("MET_DRIVER")
+
+    elif db_type == "actualizacion": # Nuevo caso
         server = os.getenv("ACT_SERVER")
         database = os.getenv("ACT_DATABASE")
         username = os.getenv("ACT_USERNAME")
